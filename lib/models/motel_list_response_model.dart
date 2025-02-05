@@ -13,7 +13,10 @@ class MotelListResponseModel {
 
   MotelListResponseModel.fromJson(Map<String, dynamic> json) {
     sucesso = json['sucesso'];
-    data = json['data'];
     mensagem = json['mensagem'];
+
+    if (json['data'] != null) {
+      data = DataModel.fromJson(json['data']);
+    }
   }
 }

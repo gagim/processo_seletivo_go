@@ -35,7 +35,7 @@ class PeriodModel {
     temCortesia = json['temCortesia'];
 
     if (json['desconto'] != null) {
-      desconto = json['desconto'];
+      desconto = DiscountModel.fromJson(json['desconto']);
     }
   }
 }

@@ -37,8 +37,26 @@ class SuiteModel {
     qtd = json['qtd'];
     exibirQtdDisponiveis = json['exibirQtdDisponiveis'];
     fotos = json['fotos'];
-    itens = json['itens'];
-    categoriaItens = json['categoriaItens'];
-    periodos = json['periodos'];
+    itens = itemList(json);
+    categoriaItens = itemCategoryList(json);
+    periodos = periodList(json);
+  }
+
+  List<ItemModel>? itemList(Map<String, dynamic> json) {
+    return json['itens']
+        ?.map<ItemModel>((json) => ItemModel.fromJson(json))
+        .toList();
+  }
+
+  List<ItemCategoryModel>? itemCategoryList(Map<String, dynamic> json) {
+    return json['categoriaItens']
+        ?.map<ItemCategoryModel>((json) => ItemCategoryModel.fromJson(json))
+        .toList();
+  }
+
+  List<PeriodModel>? periodList(Map<String, dynamic> json) {
+    return json['periodos']
+        ?.map<PeriodModel>((json) => PeriodModel.fromJson(json))
+        .toList();
   }
 }

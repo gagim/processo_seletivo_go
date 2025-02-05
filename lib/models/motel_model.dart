@@ -39,8 +39,14 @@ class MotelModel {
     bairro = json['bairro'];
     distancia = json['distancia'];
     qtdFavoritos = json['qtdFavoritos'];
-    suites = json['suites'];
+    suites = suiteList(json);
     qtdAvaliacoes = json['qtdAvaliacoes'];
     media = json['media'];
+  }
+
+  List<SuiteModel> suiteList(Map<String, dynamic> json) {
+    return json['suites']
+        ?.map<SuiteModel>((json) => SuiteModel.fromJson(json))
+        .toList();
   }
 }

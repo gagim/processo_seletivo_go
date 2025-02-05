@@ -37,6 +37,12 @@ class DataModel {
     totalMoteis = json['totalMoteis'];
     raio = json['raio'];
     maxPaginas = json['maxPaginas'];
-    moteis = json['moteis'];
+    moteis = motelList(json);
+  }
+
+  List<MotelModel>? motelList(Map<String, dynamic> json) {
+    return json['moteis']
+        ?.map<MotelModel>((json) => MotelModel.fromJson(json))
+        .toList();
   }
 }
