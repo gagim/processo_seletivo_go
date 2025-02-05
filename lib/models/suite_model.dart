@@ -6,7 +6,7 @@ class SuiteModel {
   String? nome;
   int? qtd;
   bool? exibirQtdDisponiveis;
-  List<String>? fotos;
+  List<dynamic>? fotos;
   List<ItemModel>? itens;
   List<ItemCategoryModel>? categoriaItens;
   List<PeriodModel>? periodos;
