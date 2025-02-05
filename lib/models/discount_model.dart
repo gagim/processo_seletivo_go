@@ -1,5 +1,5 @@
 class DiscountModel {
-  String? desconto;
+  double? desconto;
 
   DiscountModel({this.desconto});
 

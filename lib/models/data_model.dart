@@ -10,7 +10,7 @@ class DataModel {
   List<MotelModel>? moteis;
 
   DataModel(
-      {this.pagina,
+      {required this.pagina,
       this.qtdPorPagina,
       this.totalSuites,
       this.totalMoteis,
