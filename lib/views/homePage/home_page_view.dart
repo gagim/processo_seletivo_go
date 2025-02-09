@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:processo_seletivo_go/helpers/masks.dart';
+import 'package:processo_seletivo_go/models/suite_model.dart';
 import 'package:processo_seletivo_go/providers/motel_provider.dart';
 import 'package:processo_seletivo_go/views/homePage/home_page_controller.dart';
 import 'package:provider/provider.dart';
@@ -38,7 +39,10 @@ class MonitoringState extends State<HomePageView> {
                 ]),
                 builder: (context, child) {
                   if (controller.isLoading.value) {
-                    return const Center(child: CircularProgressIndicator());
+                    return Container(
+                        alignment: Alignment.center,
+                        height: MediaQuery.of(context).size.height,
+                        child: const CircularProgressIndicator());
                   }
 
                   if (controller.erroMsg.value.isNotEmpty) {
@@ -81,7 +85,7 @@ class MonitoringState extends State<HomePageView> {
                                     .motelResponse.value.data?.totalMoteis ??
                                 0,
                             itemBuilder: (_, i) {
-                              double widthCardSuit =
+                              final widthCardSuit =
                                   MediaQuery.of(context).size.width * 0.8;
 
                               final item = controller
@@ -150,142 +154,8 @@ class MonitoringState extends State<HomePageView> {
                                                       index <
                                                           item!.suites!.length;
                                                       index++)
-                                                    Container(
-                                                      padding:
-                                                          const EdgeInsets.all(
-                                                              5.0),
-                                                      margin:
-                                                          const EdgeInsets.only(
-                                                              right: 10),
-                                                      width: widthCardSuit,
-                                                      decoration: BoxDecoration(
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(
-                                                                      8.0),
-                                                          border: Border.all(
-                                                            width: 1,
-                                                            color: Colors
-                                                                .redAccent,
-                                                          )),
-                                                      child: Column(
-                                                          mainAxisSize:
-                                                              MainAxisSize.min,
-                                                          children: [
-                                                            SizedBox(
-                                                              height: 210.0,
-                                                              child: ClipRRect(
-                                                                borderRadius:
-                                                                    BorderRadius
-                                                                        .circular(
-                                                                            8),
-                                                                child: Image.network(
-                                                                    item.suites?[index].fotos?[
-                                                                            0] ??
-                                                                        "",
-                                                                    fit: BoxFit
-                                                                        .fill),
-                                                              ),
-                                                            ),
-                                                            const SizedBox(
-                                                                height: 20),
-                                                            Text(
-                                                              textAlign:
-                                                                  TextAlign
-                                                                      .center,
-                                                              item
-                                                                      .suites?[
-                                                                          index]
-                                                                      .nome ??
-                                                                  "",
-                                                              style:
-                                                                  const TextStyle(
-                                                                color: Colors
-                                                                    .black,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w600,
-                                                                fontSize: 20,
-                                                              ),
-                                                            ),
-                                                            Container(
-                                                              height: 1,
-                                                              margin:
-                                                                  const EdgeInsets
-                                                                      .all(
-                                                                      15.0),
-                                                              color: Colors
-                                                                  .redAccent,
-                                                            ),
-                                                            const SizedBox(
-                                                                height: 20),
-                                                            ListView.separated(
-                                                                separatorBuilder: (c,
-                                                                        i) =>
-                                                                    const SizedBox(
-                                                                        height:
-                                                                            10),
-                                                                shrinkWrap:
-                                                                    true,
-                                                                physics:
-                                                                    const ClampingScrollPhysics(),
-                                                                itemCount: item
-                                                                        .suites?[
-                                                                            index]
-                                                                        .periodos
-                                                                        ?.length ??
-                                                                    0,
-                                                                itemBuilder:
-                                                                    (_, i) {
-                                                                  final period = item
-                                                                      .suites?[
-                                                                          index]
-                                                                      .periodos?[i];
-
-                                                                  final valor = Masks()
-                                                                      .maskMonetary(
-                                                                          period?.valorTotal ??
-                                                                              0);
-
-                                                                  return Container(
-                                                                    decoration:
-                                                                        BoxDecoration(
-                                                                            borderRadius:
-                                                                                BorderRadius.circular(8.0),
-                                                                            border: Border.all(
-                                                                              width: 1,
-                                                                              color: Colors.redAccent,
-                                                                            )),
-                                                                    child: ListTile(
-                                                                        title: Text(
-                                                                          period?.tempoFormatado ??
-                                                                              "",
-                                                                          style:
-                                                                              const TextStyle(
-                                                                            color:
-                                                                                Colors.black,
-                                                                            fontWeight:
-                                                                                FontWeight.w600,
-                                                                            fontSize:
-                                                                                16,
-                                                                          ),
-                                                                        ),
-                                                                        subtitle: Text(
-                                                                          valor,
-                                                                          style:
-                                                                              const TextStyle(
-                                                                            color:
-                                                                                Colors.black,
-                                                                            fontWeight:
-                                                                                FontWeight.w600,
-                                                                            fontSize:
-                                                                                16,
-                                                                          ),
-                                                                        )),
-                                                                  );
-                                                                })
-                                                          ]),
-                                                    ),
+                                                    motelAdapter(widthCardSuit,
+                                                        item.suites![index]),
                                                 ],
                                               ),
                                             ),
@@ -297,5 +167,80 @@ class MonitoringState extends State<HomePageView> {
                         ]);
                   }
                 })));
+  }
+
+  Widget motelAdapter(double widthCardSuit, SuiteModel suit) {
+    return Container(
+      padding: const EdgeInsets.all(5.0),
+      margin: const EdgeInsets.only(right: 10),
+      width: widthCardSuit,
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(8.0),
+          border: Border.all(
+            width: 1,
+            color: Colors.redAccent,
+          )),
+      child: Column(mainAxisSize: MainAxisSize.min, children: [
+        SizedBox(
+          height: 210.0,
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(8),
+            child: Image.network(suit.fotos?[0] ?? "", fit: BoxFit.fill),
+          ),
+        ),
+        const SizedBox(height: 20),
+        Text(
+          textAlign: TextAlign.center,
+          suit.nome ?? "",
+          style: const TextStyle(
+            color: Colors.black,
+            fontWeight: FontWeight.w600,
+            fontSize: 20,
+          ),
+        ),
+        Container(
+          height: 1,
+          margin: const EdgeInsets.all(15.0),
+          color: Colors.redAccent,
+        ),
+        const SizedBox(height: 20),
+        ListView.separated(
+            separatorBuilder: (c, i) => const SizedBox(height: 10),
+            shrinkWrap: true,
+            physics: const ClampingScrollPhysics(),
+            itemCount: suit.periodos?.length ?? 0,
+            itemBuilder: (_, i) {
+              final period = suit.periodos?[i];
+
+              final valor = Masks().maskMonetary(period?.valorTotal ?? 0);
+
+              return Container(
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(8.0),
+                    border: Border.all(
+                      width: 1,
+                      color: Colors.redAccent,
+                    )),
+                child: ListTile(
+                    title: Text(
+                      period?.tempoFormatado ?? "",
+                      style: const TextStyle(
+                        color: Colors.black,
+                        fontWeight: FontWeight.w600,
+                        fontSize: 16,
+                      ),
+                    ),
+                    subtitle: Text(
+                      valor,
+                      style: const TextStyle(
+                        color: Colors.black,
+                        fontWeight: FontWeight.w600,
+                        fontSize: 16,
+                      ),
+                    )),
+              );
+            })
+      ]),
+    );
   }
 }
