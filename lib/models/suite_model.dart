@@ -6,7 +6,7 @@ class SuiteModel {
   String? nome;
   int? qtd;
   bool? exibirQtdDisponiveis;
-  List<dynamic>? fotos;
+  List<String>? fotos;
   List<ItemModel>? itens;
   List<ItemCategoryModel>? categoriaItens;
   List<PeriodModel>? periodos;
@@ -36,7 +36,7 @@ class SuiteModel {
     nome = json['nome'];
     qtd = json['qtd'];
     exibirQtdDisponiveis = json['exibirQtdDisponiveis'];
-    fotos = json['fotos'];
+    fotos = List<String>.from(json['fotos'] as List);
     itens = itemList(json);
     categoriaItens = itemCategoryList(json);
     periodos = periodList(json);
