@@ -3,10 +3,9 @@ import 'package:processo_seletivo_go/base/enums.dart';
 import 'package:processo_seletivo_go/models/generic_response_model.dart';
 import 'package:processo_seletivo_go/models/motel_response_model.dart';
 import 'package:processo_seletivo_go/providers/motel_provider.dart';
+import 'package:provider/provider.dart';
 
 class HomePageController {
-  final IMotelProvider repository;
-
   final ValueNotifier<bool> isLoading = ValueNotifier(false);
 
   final ValueNotifier<MotelResponseModel> motelResponse =
@@ -14,12 +13,12 @@ class HomePageController {
 
   final ValueNotifier<String> erroMsg = ValueNotifier('');
 
-  HomePageController({required this.repository});
+  Future getMotelsList(BuildContext context) async {
+    IMotelProvider provider = context.read<IMotelProvider>();
 
-  Future getMotelsList() async {
     isLoading.value = true;
 
-    final result = await repository.getMotels();
+    final result = await provider.getMotels();
 
     switch (result?.type) {
       case null:

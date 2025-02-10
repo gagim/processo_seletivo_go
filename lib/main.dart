@@ -24,14 +24,9 @@ void main() async {
       scrollBehavior: const ScrollBehavior(),
       title: Constants.appName,
       debugShowCheckedModeBanner: false,
-      home: MultiProvider(providers: [
-        Provider<IMotelProvider>(
-          create: (_) => MotelProvider(client: HttpClientImpl()),
-          lazy: true,
-        ),
-        Provider<IMotelProvider>(
-          create: (_) => MotelProvider(client: HttpClientImpl()),
-          lazy: true,
-        )
-      ], child: const HomePageView())));
+      home: Provider<IMotelProvider>(
+        create: (_) => MotelProvider(client: HttpClientImpl()),
+        lazy: true,
+        child: const HomePageView(),
+      )));
 }

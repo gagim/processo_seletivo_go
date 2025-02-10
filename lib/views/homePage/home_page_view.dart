@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:processo_seletivo_go/helpers/masks.dart';
 import 'package:processo_seletivo_go/models/suite_model.dart';
-import 'package:processo_seletivo_go/providers/motel_provider.dart';
 import 'package:processo_seletivo_go/views/homePage/home_page_controller.dart';
-import 'package:provider/provider.dart';
 
 class HomePageView extends StatefulWidget {
   const HomePageView({super.key});
@@ -15,12 +13,8 @@ class HomePageView extends StatefulWidget {
 class MonitoringState extends State<HomePageView> {
   @override
   Widget build(BuildContext context) {
-    IMotelProvider motelProviders =
-        Provider.of<IMotelProvider>(context, listen: false);
-
-    final HomePageController controller =
-        HomePageController(repository: motelProviders);
-    controller.getMotelsList();
+    final HomePageController controller = HomePageController();
+    controller.getMotelsList(context);
 
     return Scaffold(
         backgroundColor: Colors.white,
@@ -32,6 +26,7 @@ class MonitoringState extends State<HomePageView> {
         ),
         body: SingleChildScrollView(
             child: AnimatedBuilder(
+                key: const Key('animatedBuilderKey'),
                 animation: Listenable.merge([
                   controller.isLoading,
                   controller.erroMsg,
@@ -46,22 +41,27 @@ class MonitoringState extends State<HomePageView> {
                   }
 
                   if (controller.erroMsg.value.isNotEmpty) {
-                    return Center(
-                      child: Text(
-                        controller.erroMsg.value,
-                        style: const TextStyle(
-                          color: Colors.redAccent,
-                          fontWeight: FontWeight.w600,
-                          fontSize: 20,
-                        ),
-                        textAlign: TextAlign.center,
-                      ),
-                    );
+                    return Container(
+                        alignment: Alignment.center,
+                        height: MediaQuery.of(context).size.height,
+                        child: Center(
+                          child: Text(
+                            key: const Key('errorMsgTextKey'),
+                            controller.erroMsg.value,
+                            style: const TextStyle(
+                              color: Colors.redAccent,
+                              fontWeight: FontWeight.w600,
+                              fontSize: 20,
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
+                        ));
                   }
 
-                  if (controller.motelResponse.value.data!.moteis!.isEmpty) {
+                  if (controller.motelResponse.value.sucesso == null) {
                     return const Center(
                       child: Text(
+                        key: Key('emptyMsgTextKey'),
                         'Sem itens a mostrar',
                         style: TextStyle(
                           color: Colors.redAccent,
@@ -109,6 +109,8 @@ class MonitoringState extends State<HomePageView> {
                                                   borderRadius:
                                                       BorderRadius.circular(16),
                                                   child: Image.network(
+                                                      key: const Key(
+                                                          'imagemMotel'),
                                                       item?.logo ?? "",
                                                       height: 50.0,
                                                       width: 50.0,
@@ -123,6 +125,8 @@ class MonitoringState extends State<HomePageView> {
                                                       contentPadding:
                                                           EdgeInsets.zero,
                                                       title: Text(
+                                                        key: const Key(
+                                                            'fantasiaNameKey'),
                                                         item?.fantasia ?? "",
                                                         style: const TextStyle(
                                                           color: Colors.black,
@@ -132,6 +136,8 @@ class MonitoringState extends State<HomePageView> {
                                                         ),
                                                       ),
                                                       subtitle: Text(
+                                                        key: const Key(
+                                                            'locateKey'),
                                                         locate,
                                                         style: const TextStyle(
                                                           color: Colors.black,
@@ -154,8 +160,10 @@ class MonitoringState extends State<HomePageView> {
                                                       index <
                                                           item!.suites!.length;
                                                       index++)
-                                                    motelAdapter(widthCardSuit,
-                                                        item.suites![index]),
+                                                    motelAdapter(
+                                                        widthCardSuit,
+                                                        item.suites![index],
+                                                        index),
                                                 ],
                                               ),
                                             ),
@@ -169,7 +177,7 @@ class MonitoringState extends State<HomePageView> {
                 })));
   }
 
-  Widget motelAdapter(double widthCardSuit, SuiteModel suit) {
+  Widget motelAdapter(double widthCardSuit, SuiteModel suit, int index) {
     return Container(
       padding: const EdgeInsets.all(5.0),
       margin: const EdgeInsets.only(right: 10),
@@ -185,11 +193,16 @@ class MonitoringState extends State<HomePageView> {
           height: 210.0,
           child: ClipRRect(
             borderRadius: BorderRadius.circular(8),
-            child: Image.network(suit.fotos?[0] ?? "", fit: BoxFit.fill),
+            child: Image.network(
+              suit.fotos?[0] ?? "",
+              fit: BoxFit.fill,
+              key: Key('suitImageKey$index'),
+            ),
           ),
         ),
         const SizedBox(height: 20),
         Text(
+          key: Key('suitNameKey$index'),
           textAlign: TextAlign.center,
           suit.nome ?? "",
           style: const TextStyle(
@@ -223,6 +236,7 @@ class MonitoringState extends State<HomePageView> {
                     )),
                 child: ListTile(
                     title: Text(
+                      key: Key('periodoTimeKey$index$i'),
                       period?.tempoFormatado ?? "",
                       style: const TextStyle(
                         color: Colors.black,
@@ -231,6 +245,7 @@ class MonitoringState extends State<HomePageView> {
                       ),
                     ),
                     subtitle: Text(
+                      key: Key('valorPeriodoKey$index$i'),
                       valor,
                       style: const TextStyle(
                         color: Colors.black,
