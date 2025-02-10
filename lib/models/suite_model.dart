@@ -36,10 +36,14 @@ class SuiteModel {
     nome = json['nome'];
     qtd = json['qtd'];
     exibirQtdDisponiveis = json['exibirQtdDisponiveis'];
-    fotos = List<String>.from(json['fotos'] as List);
+    fotos = fotosList(json);
     itens = itemList(json);
     categoriaItens = itemCategoryList(json);
     periodos = periodList(json);
+  }
+
+  List<String> fotosList(Map<String, dynamic> json) {
+    return List<String>.from(json['fotos']);
   }
 
   List<ItemModel>? itemList(Map<String, dynamic> json) {
