@@ -19,4 +19,10 @@ Plugins:
 - string_mask: ^1.0.0
 - intl: ^0.17.0
 
+## Video do aplicativo - IPhone 16 pro - IOS 18.2
+
+
+https://github.com/user-attachments/assets/7e538f23-cfd6-41e4-9f3c-75affa186c78
+
+
 Desde já agradeço pela oportunidade.
